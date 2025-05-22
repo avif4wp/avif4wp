@@ -1,0 +1,5 @@
+{
+	"title": "<h1>Versi 1.0.0</h1>",
+	"changelog": "<h3>Catatan Perubahan</h3>\n<ul>\n  <li>- Rilis awal plugin AVIF4WP.</li>\n  <li>- Konversi otomatis</li>\n  <li>- Menggunakan engine GD dan Imagick untuk konversi gambar</li>\n <li>- Placeholder warna ketika gambar sedang dimuat di frontend</li>\n  <li>- Pengaturan kualitas gambar</li>\n  <li>- SrcSync memungkinkan gambar responsif menjadi WebP atau AVIF</li>\n  <li>- Opsi untuk menghapus gambar asli (JPG/PNG) setelah konversi</li>\n</ul>",
+	"note": "<h4>Catatan:</h4>\n<p>Update selanjutnya akan menambahkan fitur baru dan perbaikan bug.</p>"
+}
