@@ -1,17 +1,22 @@
 <?php
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 class Avif4WP_Dashboard {
+
 	public static function render_dashboard() {
 		wp_enqueue_style( 'avif4wp-dashboard-style', plugin_dir_url( __FILE__ ) . 'dashboard-style.css' );
+
 		$space_saved      = get_option( 'avif4wp_space_saved', 0 );
 		$images_converted = get_option( 'avif4wp_images_converted', 0 );
 		$output_format    = get_option( 'avif_output_format', 'avif' );
+
 		$timestamp   = current_time( 'timestamp' );
 		$server_time = date_i18n( 'H:i d/m/Y', $timestamp );
 		echo '<p>' . sprintf( esc_html__( 'Waktu server saat ini: %s', 'avif4wp' ), $server_time ) . '</p>';
+
 		$imagickSupported = false;
 		if ( extension_loaded( 'imagick' ) && class_exists( 'Imagick' ) ) {
 			$formats = Imagick::queryFormats();
@@ -19,6 +24,7 @@ class Avif4WP_Dashboard {
 				$imagickSupported = true;
 			}
 		}
+
 		$gmagickSupported = false;
 		if ( extension_loaded( 'gmagick' ) && class_exists( 'Gmagick' ) ) {
 			$gmOutput = shell_exec( 'gm convert -list format 2>&1' );
@@ -26,38 +32,34 @@ class Avif4WP_Dashboard {
 				$gmagickSupported = true;
 			}
 		}
+
 		$ffmpegSupported = false;
 		$ffmpegOutput    = shell_exec( 'ffmpeg -encoders 2>&1' );
 		if ( strpos( $ffmpegOutput, 'libaom-av1' ) !== false ) {
 			$ffmpegSupported = true;
 		}
+
 		$libavifSupported = false;
 		$libavifOutput    = shell_exec( 'avifenc --version 2>&1' );
 		if ( strpos( $libavifOutput, 'avifenc' ) !== false ) {
 			$libavifSupported = true;
 		}
+
 		$phpImageavifSupported = function_exists( 'imageavif' );
+
 		$countLibrary = 0;
-		if ( $imagickSupported ) {
-			$countLibrary++;
-		}
-		if ( $gmagickSupported ) {
-			$countLibrary++;
-		}
-		if ( $ffmpegSupported ) {
-			$countLibrary++;
-		}
-		if ( $libavifSupported ) {
-			$countLibrary++;
-		}
-		if ( $phpImageavifSupported ) {
-			$countLibrary++;
-		}
+		if ( $imagickSupported ) $countLibrary++;
+		if ( $gmagickSupported ) $countLibrary++;
+		if ( $ffmpegSupported ) $countLibrary++;
+		if ( $libavifSupported ) $countLibrary++;
+		if ( $phpImageavifSupported ) $countLibrary++;
+
 		$gdSupported = false;
 		if ( function_exists( 'gd_info' ) ) {
-			$gd_info = gd_info();
+			$gd_info     = gd_info();
 			$gdSupported = ( isset( $gd_info['WebP Support'] ) && $gd_info['WebP Support'] );
 		}
+
 		$status      = 'Abnormal';
 		$statusClass = 'red';
 		if ( $gdSupported && $countLibrary >= 2 ) {
@@ -67,11 +69,12 @@ class Avif4WP_Dashboard {
 			$status      = 'Abnormal';
 			$statusClass = 'yellow';
 		}
+
 		$conversion_logs = get_option( 'avif4wp_conversion_logs', array() );
 		if ( ! empty( $conversion_logs ) ) {
 			$conversion_logs = array_reverse( $conversion_logs );
-			$uniqueLogs = array();
-			$seen       = array();
+			$uniqueLogs      = array();
+			$seen            = array();
 
 			foreach ( $conversion_logs as $log ) {
 				$fileKey = $log['image_name'];
@@ -80,13 +83,14 @@ class Avif4WP_Dashboard {
 					$seen[ $fileKey ] = true;
 				}
 			}
+
 			$uniqueLogs      = array_slice( $uniqueLogs, 0, 10 );
 			$conversion_logs = $uniqueLogs;
 		}
 		?>
 		<div class="wrap">
 			<h1><?php esc_html_e( 'Dasbor', 'avif4wp' ); ?></h1>
-			
+
 			<div class="avif4wp-analytics-cards">
 				<div class="avif4wp-card">
 					<h2><?php esc_html_e( 'Total Ruang Dihemat', 'avif4wp' ); ?></h2>
@@ -103,7 +107,7 @@ class Avif4WP_Dashboard {
 					</a>
 				</div>
 			</div>
-			
+
 			<h2><?php esc_html_e( 'Konversi Terakhir', 'avif4wp' ); ?></h2>
 			<table class="widefat fixed avif4wp-conversion-table" cellspacing="0">
 				<thead>

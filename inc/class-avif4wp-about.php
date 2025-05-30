@@ -4,6 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 class Avif4WP_About {
+
 	public static function render() {
 		$allowed_tags = array(
 			'br' => array(),

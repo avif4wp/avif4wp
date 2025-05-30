@@ -12,7 +12,6 @@ class Avif4WP {
     public function __construct() {
         self::$instance = $this;
         $this->version  = defined( 'AVIF4WP_VERSION' ) ? AVIF4WP_VERSION : '1.0.0';
-
         add_action( 'init', array( $this, 'load_textdomain' ) );
         add_action( 'admin_menu', array( $this, 'register_admin_menu' ) );
         add_action( 'admin_menu', array( $this, 'remove_submenu_duplicate' ), 999 );
@@ -24,14 +23,11 @@ class Avif4WP {
 
     public function run() {
         $this->settings = new Avif4WP_Settings();
-
         require_once AVIF4WP_PLUGIN_DIR . 'inc/class-avif4wp-convertselector.php';
         $this->converter = new Avif4WP_ConvertSelector();
         $this->converter->init_hooks();
-
         add_filter( 'wp_get_attachment_url', array( $this->converter, 'redirect_to_converted' ), 10, 2 );
         add_filter( 'the_content', array( $this->converter, 'process_editor_images' ) );
-
         add_filter( 'wp_get_attachment_url', array( $this->converter, 'redirect_to_converted' ), 10, 2 );
         add_filter( 'the_content', array( $this->converter, 'process_editor_images' ) );
     }
@@ -84,7 +80,9 @@ class Avif4WP {
             <a href="<?php echo esc_url( admin_url( 'admin.php?page=avif4wp&tab=system_info' ) ); ?>" class="nav-tab <?php echo ( 'system_info' === $active_tab ? 'nav-tab-active' : '' ); ?>">Info Sistem</a>
             <a href="<?php echo esc_url( admin_url( 'admin.php?page=avif4wp&tab=changelog' ) ); ?>" class="nav-tab <?php echo ( 'changelog' === $active_tab ? 'nav-tab-active' : '' ); ?>">Catatan Perubahan</a>
             <a href="<?php echo esc_url( admin_url( 'admin.php?page=avif4wp&tab=about' ) ); ?>" class="nav-tab <?php echo ( 'about' === $active_tab ? 'nav-tab-active' : '' ); ?>">Tentang</a>
-            <a href="<?php echo esc_url( admin_url( 'admin.php?page=avif4wp&tab=upgrade' ) ); ?>" class="nav-tab <?php echo ( 'upgrade' === $active_tab ? 'nav-tab-active' : '' ); ?>"><?php esc_html_e( 'Upgrade', 'avif4wp' ); ?></a>
+            <a href="<?php echo esc_url( admin_url( 'admin.php?page=avif4wp&tab=upgrade' ) ); ?>" class="nav-tab <?php echo ( 'upgrade' === $active_tab ? 'nav-tab-active' : '' ); ?>">
+                <?php esc_html_e( 'Upgrade', 'avif4wp' ); ?>
+            </a>
         </h2>
         <?php
     }
@@ -92,7 +90,6 @@ class Avif4WP {
     public static function render_tab_content( $active_tab ) {
         if ( 'dashboard' === $active_tab ) {
             self::display_dashboard();
-
         } elseif ( 'settings' === $active_tab ) {
             ?>
             <form method="post" action="options.php">
@@ -103,19 +100,15 @@ class Avif4WP {
                 ?>
             </form>
             <?php
-
         } elseif ( 'system_info' === $active_tab ) {
             require_once AVIF4WP_PLUGIN_DIR . 'inc/class-avif4wp-system-info.php';
             Avif4WP_System_Info::render();
-
         } elseif ( 'changelog' === $active_tab ) {
             require_once AVIF4WP_PLUGIN_DIR . 'inc/class-avif4wp-changelog.php';
             Avif4WP_Changelog::render();
-
         } elseif ( 'about' === $active_tab ) {
             require_once AVIF4WP_PLUGIN_DIR . 'inc/class-avif4wp-about.php';
             Avif4WP_About::render();
-
         } elseif ( 'upgrade' === $active_tab ) {
             require_once AVIF4WP_PLUGIN_DIR . 'inc/class-avif4wp-upgrade.php';
             if ( class_exists( 'Avif4WP_Upgrade' ) ) {
@@ -123,14 +116,12 @@ class Avif4WP {
             } else {
                 echo '<div class="notice notice-error"><p>' . esc_html__( 'Kelas Avif4WP_Upgrade tidak ditemukan.', 'avif4wp' ) . '</p></div>';
             }
-
         } elseif ( 'cdn' === $active_tab ) {
             if ( ! empty( self::$instance->cdn ) ) {
                 self::$instance->cdn->render_settings_page();
             } else {
                 echo '<div class="notice notice-error"><p>Kelas Avif4WP_CDN belum diinisialisasi.</p></div>';
             }
-
         } else {
             echo '<p>' . esc_html__( 'Tab tidak ditemukan.', 'avif4wp' ) . '</p>';
         }
@@ -149,5 +140,4 @@ class Avif4WP {
             echo '<div class="notice notice-error"><p>File dashboard tidak ditemukan: ' . esc_html( $dashboard_file ) . '</p></div>';
         }
     }
-
 }

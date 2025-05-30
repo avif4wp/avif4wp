@@ -1,3 +1,1 @@
-jQuery(document).ready(function($){
-	$('.avif-color-picker').wpColorPicker();
-});
+jQuery(document).ready(function(o){o(".avif-color-picker").wpColorPicker()});

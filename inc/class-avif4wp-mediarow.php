@@ -21,7 +21,7 @@ class avif4wp_mediarow {
         }
         return $new_columns;
     }
-
+    
     public function render_custom_media_columns( $column_name, $post_id ) {
         if ( 'converted_avif' === $column_name ) {
             $converted_avif = get_post_meta( $post_id, 'converted_avif', true );

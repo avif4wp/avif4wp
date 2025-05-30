@@ -2,7 +2,7 @@
 /**
  * Plugin Name:     AVIF4WP
  * Plugin URI:      https://avif4wp.com
- * Description:     AVIF4WP mengoptimalkan gambar WordPress Anda dengan mengonversi JPG/PNG ke AVIF atau WebP secara otomatis. Dilengkapi fitur regenerasi thumbnail, konversi massal dengan dukungan caching, pengaturan kualitas, dan placeholder warna.
+ * Description:     AVIF4WP mengoptimalkan gambar WordPress Anda dengan mengonversi JPG/PNG ke AVIF secara otomatis.
  * Version:         1.0.0
  * Update URI:      https://github.com/avif4wp/avif4wp
  * Author:          AVIF4WP
@@ -159,19 +159,6 @@ function avif4wp_init() {
     $plugin = new AVIF4WP();
     if ( method_exists( $plugin, 'run' ) ) {
         $plugin->run();
-    }
-}
-
-add_action( 'wp_enqueue_scripts', 'avif4wp_enqueue_picturefill' );
-function avif4wp_enqueue_picturefill() {
-    if ( 'yes' === get_option( 'avif_picturefill', 'yes' ) ) {
-        wp_enqueue_script(
-            'picturefill',
-            AVIF4WP_PLUGIN_URL . 'assets/js/picturefill.min.js',
-            [],
-            AVIF4WP_VERSION,
-            true
-        );
     }
 }
 

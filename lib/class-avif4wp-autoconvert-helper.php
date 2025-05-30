@@ -32,7 +32,7 @@ class Avif4WP_AutoConverterHelper {
         $converter = self::get_converter_instance();
         foreach ( $batch as $file_path ) {
             if ( file_exists( $file_path ) ) {
-                $converter->convert( $file_path );
+                $converted = $converter->convert( $file_path );
             }
         }
     }
@@ -48,11 +48,4 @@ class Avif4WP_AutoConverterHelper {
         require_once __DIR__ . '/class-avif4wp-converter-avif.php';
         return new Avif4WP_ConverterAVIF();
     }
-
-    protected static function log( $msg ) {
-        if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-            error_log( "[avif4wp][AutoConverter] {$msg}" );
-        }
-    }
-
 }
